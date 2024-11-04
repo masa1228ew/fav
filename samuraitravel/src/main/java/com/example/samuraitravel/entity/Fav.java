@@ -2,6 +2,8 @@ package com.example.samuraitravel.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -34,10 +36,12 @@ public class Fav {
 	
 	@Column(name = "created_at")
 	  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@CreationTimestamp
 	  private LocalDateTime createdAt;
 	
 	@Column(name="updated_at")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@UpdateTimestamp
 	 private LocalDateTime updatedAt;
 	
 }

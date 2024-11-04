@@ -26,14 +26,14 @@
                                  </ol>
                              </nav> 
 <!--                             お気に入り追加-->
-                             <div th:if="${fav}" sec:authorize="isAuthenticated()">
-    <form method="POST" th:action="@{/fav/add}">
+                             <div th:if="${!isFav}" sec:authorize="isAuthenticated()">
+    <form method="POST" th:action="@{/houses/__${house.getId()}__/fav/add}">
         <input type="hidden" name="houseId" th:value="${house.getId()}" />
         <button type="submit" class="btn btn-primary">お気に入りに追加する</button>
     </form>
 </div>
 <!--                                  お気に入り削除-->
-<div th:if="${fav}"sec:authorize="isAuthenticated()">
+<div th:if="${isFav}"sec:authorize="isAuthenticated()">
     <form method="POST" th:action="@{/fav/delete}">
         <input type="hidden" name="houseId" th:value="${house.getId()}" />
         <button type="submit" class="btn btn-danger">お気に入りから削除する</button>

@@ -13,5 +13,6 @@ public class FavForm {
 private Integer favId;
 
 @NotNull
+
 private LocalDateTime updatedAt;
 }

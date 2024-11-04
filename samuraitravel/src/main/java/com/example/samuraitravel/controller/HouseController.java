@@ -1,6 +1,7 @@
 package com.example.samuraitravel.controller;
 
- import java.util.List;
+ import java.security.Principal;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -91,13 +92,22 @@ public class HouseController {
          return "houses/index";
      }
      @GetMapping("/{id}")
-     public String show(@PathVariable(name = "id") Integer id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+     public String show(@PathVariable(name = "id") Integer id, Model model, 
+    		 @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    		 Principal principal) {
          House house = houseRepository.getReferenceById(id);
          boolean hasUserAlreadyReviewed = false;
+         boolean isFav = false;
          
          if(userDetailsImpl!=null) {
         	 User user = userDetailsImpl.getUser();
         	 hasUserAlreadyReviewed = reviewService.hasUserAlreadyReviewed(house,user);
+        	 isFav = favService.isFav(house, user);
+         }
+         
+         if(principal != null) {
+        	 User user = userDetailsImpl.getUser();
+        	 isFav = favService.isFav(house,user);
          }
          List<Review> newReviews =reviewRepository.findTop6ByHouseOrderByCreatedAtDesc(house);
          long totalReviewCount = reviewRepository.countByHouse(house);  
@@ -107,6 +117,7 @@ public class HouseController {
          model.addAttribute("hasUserAlreadyReviewed", hasUserAlreadyReviewed);
          model.addAttribute("newReviews",newReviews);
          model.addAttribute("totalReviewCount",totalReviewCount);
+         model.addAttribute("isFav",isFav);
          
          
          return "houses/show";
@@ -125,18 +136,20 @@ public class HouseController {
     	
      }
      
-     @PostMapping("/fav/add")
-     public String fav(@PathVariable(name="id") Integer id,
+     @PostMapping("/{houseId}/fav/add")
+     public String fav(@PathVariable(name="houseId") Integer houseId,
     		 @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-    		 @PathVariable(name="favId") Integer favId,Model model,
+    		 Model model,
     		 @ModelAttribute @Validated FavForm favForm ) {
     	 
-    	 House house = houseRepository.getReferenceById(id);
+    	 House house = houseRepository.getReferenceById(houseId);
+    	
     	 User user = userDetailsImpl.getUser();
     	 
     	 favService.create(house,user,favForm);
     	 
-    	 return "houses/{id}";
+//    	 return "houses/{id}";
+    	 return "redirect:/houses/" + houseId;
      }
     
      
