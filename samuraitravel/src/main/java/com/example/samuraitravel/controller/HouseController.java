@@ -152,6 +152,21 @@ public class HouseController {
     	 return "redirect:/houses/" + houseId;
      }
     
+     @PostMapping("/{houseId}/fav/delete")
+     public String delete(@PathVariable(name="houseId") Integer houseId,
+    		 @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    		 Model model,
+    		 @ModelAttribute @Validated FavForm favForm ) {
+    	 
+    	 House house = houseRepository.getReferenceById(houseId);
+    	
+    	 User user = userDetailsImpl.getUser();
+    	 
+    	 favService.create(house,user,favForm);
+//    	 
+//    	 return "houses/{id}";
+    	 return "redirect:/houses/" + houseId;
+     }
      
 //     @PostMapping("/{id}/review/create")
 //     public String create(@PathVariable(name = "id") Integer id,Model model,@ModelAttribute @Validated ReviewRegisterForm reviewRegisterForm,BindingResult bindingResult,RedirectAttributes redirectAttributes ) {

@@ -34,12 +34,11 @@ public class Fav {
 	 @JoinColumn(name="user_id")
 	 private User user;
 	
-	@Column(name = "created_at")
-	  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name = "created_at", insertable = false, updatable = false)	  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@CreationTimestamp
 	  private LocalDateTime createdAt;
 	
-	@Column(name="updated_at")
+	 @Column(name = "updated_at", insertable = false)
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@UpdateTimestamp
 	 private LocalDateTime updatedAt;

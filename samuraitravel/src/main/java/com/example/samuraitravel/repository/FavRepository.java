@@ -1,5 +1,7 @@
 package com.example.samuraitravel.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.samuraitravel.entity.Fav;
@@ -18,4 +20,8 @@ public void deleteByUserAndFavId(User user, int fav);
 public boolean existsByUserAndHouse(User user, House house);
 
 public void deleteByUserAndHouse(User user, House house);
+
+public Page<Fav> findByUserOrderByCreatedAtDesc(User user, Pageable pageable);
+
+//public Page<Fav> findByHouseOrderByCreatedAtDesc(House house,Pageable pageable);
 }
