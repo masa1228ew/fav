@@ -17,17 +17,21 @@ import com.example.samuraitravel.security.UserDetailsImpl;
 @Controller
 public class FavController {
  private final FavRepository favRepository;
+// private final HouseRepository houseRepository;
  
  public FavController(FavRepository favRepository) {
 	 this.favRepository = favRepository;
+//	 this.houseRepository = houseRepository;
  }
  
  @GetMapping("/fav")
- public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC)Pageable pageable, Model model) {
+ public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @PageableDefault(page = 0, size = 10, sort = "favId", direction = Direction.ASC)Pageable pageable, Model model) {
  User user = userDetailsImpl.getUser();
+// House house = houseRepository.getId();
  Page<Fav> favPage = favRepository.findByUserOrderByCreatedAtDesc(user,pageable);
  
  model.addAttribute("favPage",favPage);
+// model.addAttribute("house", house); 
  
  return "fav/index";
 }
